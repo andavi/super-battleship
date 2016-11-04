@@ -60,66 +60,49 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
 
 
     var mapDrawHandler = function(e) {
+        board_edge = 600;
+        cell_edge = board_edge / game.getBoardSize();
         map.empty();
-
-        var map_str = "";
-
-        map_str += "   ";
-        for (var x = 0; x < game.getBoardSize(); x++) {
-            map_str += Math.floor(x / 10);
-        }
-        map_str += "\n";
-        map_str += "   ";
-        for (var x = 0; x < game.getBoardSize(); x++) {
-            map_str += x % 10;
-        }
-        map_str += "\n";
-        for (var x = -3; x < game.getBoardSize() + 1; x++) {
-            map_str += "-";
-        }
-        map_str += "\n";
+        map.css({width: board_edge+'px', height: board_edge+'px'});
 
         for (var y = 0; y < game.getBoardSize(); y++) {
-            map_str += Math.floor(y / 10);
-            map_str += y % 10;
-            map_str += "|";
             for (var x = 0; x < game.getBoardSize(); x++) {
+                cell = $('<div></div>');
+                cell.css({width: cell_edge+'px', height: cell_edge+'px'});
+                cell.addClass('cell');
                 var sqr = game.queryLocation(key, x, y);
                 switch (sqr.type) {
                     case "miss":
-                        map_str += "M";
+                        cell.addClass('miss');
                         break;
                     case "p1":
                         if (sqr.state == SBConstants.OK) {
-                            map_str += "1";
+                            // map_str += "1";
+                            cell.addClass('ship');
                         } else {
-                            map_str += "X";
+                            // map_str += "X";
+                            cell.addClass('hit');
                         }
                         break;
                     case "p2":
                         if (sqr.state == SBConstants.OK) {
-                            map_str += "2";
+                            // map_str += "2";
+                            cell.addClass('ship');
                         } else {
-                            map_str += "X";
+                            // map_str += "X";
+                            cell.addClass('hit');
                         }
                         break;
                     case "empty":
-                        map_str += ".";
+                        cell.addClass('empty');
                         break;
                     case "invisible":
-                        map_str += "?";
+                        cell.addClass('invisible');
                         break;
                 }
+                map.append(cell);
             }
-            map_str += "|";
-            map_str += "\n";
         }
-        for (var x = -3; x < game.getBoardSize() + 1; x++) {
-            map_str += "-";
-        }
-        map_str += "\n";
-
-        map.append($('<pre></pre>').text(map_str));
     };
 
     game.registerEventHandler(SBConstants.TURN_CHANGE_EVENT,

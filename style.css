@@ -2,13 +2,38 @@ body {
     font-family: Verdana, Arial, sans-serif;;
 }
 
+.cell {
+    outline: 1px solid;
+    float: left;
+}
+
+.miss {
+    background-color: red;
+}
+
+.ship {
+    background-color: gray;
+}
+
+.hit {
+    background-color: orange;
+}
+
+.empty {
+    background-color: blue;
+}
+
+.invisible {
+    background-color: black;
+}
+
 #map_panel {
-    width: 60%;
+    /*width: 60%;*/
     float: left;
 }
 
 #map_view {
-    height: 800px;
+    outline: 1px solid;
 }
 
 #cli_panel {
