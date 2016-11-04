@@ -1,10 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-    </head>
-    <body>
 
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>Welcome to Super Battleship</title>
+    <!-- <script src="http://www.cs.unc.edu/Courses/comp426-f16/jquery-3.1.0.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="http://www.cs.unc.edu/Courses/comp426-f16/kmp/SuperBattleship/SBConstants.js"></script>
+    <script src="http://www.cs.unc.edu/Courses/comp426-f16/kmp/SuperBattleship/SuperBattleship.js"></script>
+    <script src="player.js"></script>
+    <script src="DumbAI.js"></script>
+    <script src="client.js"></script>
+
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+
+<body>
+
+    <div id="map_panel">
+        <div id="map_view">
+            <div id="p1_view">P1 View</div>
+        </div>
+    </div>
+
+    <div id="cli_panel">
+        <div id="p1_cli_panel">
+            <div>
+                <h3>Player 1</h3></div>
+            <div><input id="p1_cli_input"></div>
+            <div id="p1_cli_output"></div>
+        </div>
+    </div>
+
+</body>
+
 </html>
