@@ -1,4 +1,5 @@
-var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
+var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
+    boardEdge) {
 
     if (is_player_one) {
         var key = game.registerPlayerOne();
@@ -10,6 +11,7 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
     cli_output = $(cli_output);
     cli_input = $(cli_input);
     map = $(map);
+    ship = null;
 
     var eventLogHandler = function(e) {
         var cli_msg = $('<div class="cli_msg"></div>');
@@ -57,10 +59,11 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
         eventLogHandler);
     game.registerEventHandler(SBConstants.SHIP_SUNK_EVENT,
         eventLogHandler);
+    game.registerEventHandler(SBConstants.GAME_OVER_EVENT,
+        eventLogHandler);
 
 
     var mapDrawHandler = function(e) {
-        var boardEdge = 600;
         var cellEdge = boardEdge / game.getBoardSize();
         map.empty();
         map.css({width: boardEdge+'px', height: boardEdge+'px'});
@@ -79,9 +82,9 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
                     case "p1":
                         if (sqr.state == SBConstants.OK) {
                             if (sqr.segment == 0){
-                                cell.addClass('front');
+                                cell.addClass('forecastle');
                             } else {
-                                cell.addClass('ship');
+                                cell.addClass('p1');
                             }
                         } else {
                             cell.addClass('hit');
@@ -90,9 +93,9 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
                     case "p2":
                         if (sqr.state == SBConstants.OK) {
                             if (sqr.segment == 0){
-                                cell.addClass('front');
+                                cell.addClass('forecastle');
                             } else {
-                                cell.addClass('ship');
+                                cell.addClass('p2');
                             }
                         } else {
                             cell.addClass('hit');
@@ -114,22 +117,30 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
     game.registerEventHandler(SBConstants.GAME_OVER_EVENT, mapDrawHandler);
 
     map.on('click', '.cell', function(e) {
+        e.stopPropagation();
         var x = $(this).data('x');
         var y = $(this).data('y');
         var sqr = game.queryLocation(key, x, y);
         if (sqr.type == 'p1') {
-            var direction = sqr.ship.getPosition(key).direction;
-             game.moveShipForward(key, sqr.ship);
-            // map.on('keypress', function(e) {
-            //     if (e.keyCode == 38) {
-            //         e.preventDefault();
-            //         game.moveShipForward(key, sqr.ship);
-            //     }
-            // })
-
-
+            ship = sqr.ship;
         } else {
             game.shootAt(key, x, y);
+        }
+    })
+    $(document).on('keypress', function(e) {
+        switch (e.keyCode) {
+            case 102:
+                game.moveShipForward(key, ship);
+                break;
+            case 98:
+                game.moveShipBackward(key, ship);
+                break;
+            case 114:
+                game.rotateShipCW(key, ship);
+                break;
+            case 108:
+                game.rotateShipCCW(key, ship);
+                break;
         }
     })
 

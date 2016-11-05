@@ -15,11 +15,15 @@ h1 {
     background-color: white;
 }
 
-.ship {
+.p1 {
     background-color: gray;
 }
 
-.front {
+.p2 {
+    background-color: darkslategray;
+}
+
+.forecastle {
     background-color: green;
 }
 
