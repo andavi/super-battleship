@@ -30,6 +30,7 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                 break;
             case SBConstants.HIT_EVENT:
                 cli_msg.text("Hit event at (" + e.x + ", " + e.y + ")");
+                cli_msg.addClass('bold');
                 break;
             case SBConstants.SHIP_SUNK_EVENT:
                 var pos;
@@ -40,6 +41,7 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                 } else {
                     pos = ship.getPosition(null); // This works because ship is dead.
                     cli_msg.text("You sunk their " + ship.getName() + " at (" + pos.x + ", " + pos.y + ")");
+                    cli_msg.addClass('bold');
                 }
                 break;
             case SBConstants.GAME_OVER_EVENT:
@@ -48,6 +50,7 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                 } else {
                     cli_msg.text("Game over. You lose!");
                 }
+                cli_msg.addClass('bold');
                 break;
         }
         cli_output.prepend(cli_msg);
@@ -205,7 +208,7 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
     game.registerEventHandler(SBConstants.GAME_OVER_EVENT, mapDrawHandler);
 
     map.on('click', '.cell', function(e) {
-        e.stopPropagation();
+        // e.stopPropagation();
         var x = $(this).data('x');
         var y = $(this).data('y');
         var sqr = game.queryLocation(key, x, y);
