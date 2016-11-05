@@ -126,76 +126,23 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
         } else {
             game.shootAt(key, x, y);
         }
-    })
+    });
     $(document).on('keypress', function(e) {
-        switch (e.keyCode) {
-            case 102:
-                game.moveShipForward(key, ship);
-                break;
-            case 98:
-                game.moveShipBackward(key, ship);
-                break;
-            case 114:
-                game.rotateShipCW(key, ship);
-                break;
-            case 108:
-                game.rotateShipCCW(key, ship);
-                break;
-        }
-    })
-
-    cli_input.on('keypress', function(e) {
-        if (e.keyCode == 13) {
-            var cmd_str = $(this).val();
-            //	    $(this).val('');
-            var cmd_array = cmd_str.split(' ');
-            if (cmd_array[0] == "shootAt") {
-                var x = parseInt(cmd_array[1]);
-                var y = parseInt(cmd_array[2]);
-                game.shootAt(key, x, y);
-            } else if (cmd_array[0] == "fleetInfo") {
-                var fleet = game.getFleetByKey(key);
-                var fleet_ul = $('<ul></ul>');
-                fleet.forEach(function(s) {
-                    var ship_str = "<li>" + s.getName();
-                    var ship_pos = s.getPosition(key);
-                    ship_str += "<ul>";
-                    ship_str += "<li>Position: " + ship_pos.x + ", " + ship_pos.y + "</li>";
-                    ship_str += "<li>Direction: " + ship_pos.direction + "</li>";
-                    ship_str += "<li>Size: " + s.getSize() + "</li>";
-                    if (s.getStatus() == SBConstants.ALIVE) {
-                        ship_str += "<li>Status: ALIVE</li>";
-                    } else {
-                        ship_str += "<li>Status: DEAD</li>";
-                    }
-                    ship_str += "</ul></li>";
-                    fleet_ul.append(ship_str);
-                })
-                cli_output.prepend($('<div class="cli_msg"></div>').append(fleet_ul));
-            } else if (cmd_array[0] == "moveForward") {
-                var ship_name = cmd_array[1];
-                var ship = game.getShipByName(key, ship_name);
-                if (ship != null) {
+        console.log(e.keyCode);
+        if (ship){
+            switch (e.keyCode) {
+                case 102:
                     game.moveShipForward(key, ship);
-                }
-            } else if (cmd_array[0] == "moveBackward") {
-                var ship_name = cmd_array[1];
-                var ship = game.getShipByName(key, ship_name);
-                if (ship != null) {
+                    break;
+                case 98:
                     game.moveShipBackward(key, ship);
-                }
-            } else if (cmd_array[0] == "rotateCW") {
-                var ship_name = cmd_array[1];
-                var ship = game.getShipByName(key, ship_name);
-                if (ship != null) {
+                    break;
+                case 114:
                     game.rotateShipCW(key, ship);
-                }
-            } else if (cmd_array[0] == "rotateCCW") {
-                var ship_name = cmd_array[1];
-                var ship = game.getShipByName(key, ship_name);
-                if (ship != null) {
+                    break;
+                case 108:
                     game.rotateShipCCW(key, ship);
-                }
+                    break;
             }
         }
     });

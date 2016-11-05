@@ -6,6 +6,13 @@ h1 {
     text-align: center;
 }
 
+.rules {
+    border: 1px solid;
+    margin-right: 30%;
+    margin-top: 5%;
+    padding-left: 5%; 
+}
+
 .cell {
     outline: 1px solid darkslategray;
     float: left;
