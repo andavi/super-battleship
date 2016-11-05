@@ -1,22 +1,30 @@
 body {
-    font-family: Verdana, Arial, sans-serif;;
+    font-family: Helvetica, Verdana, Arial, sans-serif;;
+}
+
+h1 {
+    text-align: center;
 }
 
 .cell {
-    outline: 1px solid;
+    outline: 1px solid darkslategray;
     float: left;
 }
 
 .miss {
-    background-color: red;
+    background-color: white;
 }
 
 .ship {
     background-color: gray;
 }
 
+.front {
+    background-color: green;
+}
+
 .hit {
-    background-color: orange;
+    background-color: red;
 }
 
 .empty {
@@ -28,12 +36,13 @@ body {
 }
 
 #map_panel {
-    /*width: 60%;*/
+    width: 60%;
     float: left;
 }
 
 #map_view {
-    outline: 1px solid;
+    width: 75%;
+    margin: 0 auto;
 }
 
 #cli_panel {

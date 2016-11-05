@@ -78,14 +78,22 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
                         break;
                     case "p1":
                         if (sqr.state == SBConstants.OK) {
-                            cell.addClass('ship');
+                            if (sqr.segment == 0){
+                                cell.addClass('front');
+                            } else {
+                                cell.addClass('ship');
+                            }
                         } else {
                             cell.addClass('hit');
                         }
                         break;
                     case "p2":
                         if (sqr.state == SBConstants.OK) {
-                            cell.addClass('ship');
+                            if (sqr.segment == 0){
+                                cell.addClass('front');
+                            } else {
+                                cell.addClass('ship');
+                            }
                         } else {
                             cell.addClass('hit');
                         }
@@ -105,6 +113,16 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
     game.registerEventHandler(SBConstants.TURN_CHANGE_EVENT,
         mapDrawHandler);
 
+    map.on('click', '.cell', function(e) {
+        var x = $(this).data('x');
+        var y = $(this).data('y');
+        var sqr = game.queryLocation(key, x, y);
+        if (sqr.type == 'p1') {
+            
+        } else {
+            game.shootAt(key, x, y);
+        }
+    })
 
     cli_input.on('keypress', function(e) {
         if (e.keyCode == 13) {
