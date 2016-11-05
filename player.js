@@ -1,16 +1,17 @@
 var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
     boardEdge) {
 
+    var key;
     if (is_player_one) {
-        var key = game.registerPlayerOne();
+        key = game.registerPlayerOne();
     } else {
         key = game.registerPlayerTwo();
     }
 
 
-    var cli_output = $(cli_output);
-    var cli_input = $(cli_input);
-    var map = $(map);
+    cli_output = $(cli_output);
+    cli_input = $(cli_input);
+    map = $(map);
     var ship = null;
     var fleet = [{name: "Carrier",
           size: 5},
@@ -41,12 +42,13 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                 cli_msg.text("Hit event at (" + e.x + ", " + e.y + ")");
                 break;
             case SBConstants.SHIP_SUNK_EVENT:
+                var pos;
                 var ship = e.ship;
                 if (ship.isMine(key)) {
-                    var pos = ship.getPosition(key);
+                    pos = ship.getPosition(key);
                     cli_msg.text("Foe sunk your " + ship.getName() + " at (" + pos.x + ", " + pos.y + ")");
                 } else {
-                    var pos = ship.getPosition(null); // This works because ship is dead.
+                    pos = ship.getPosition(null); // This works because ship is dead.
                     cli_msg.text("You sunk their " + ship.getName() + " at (" + pos.x + ", " + pos.y + ")");
                 }
                 break;
@@ -135,7 +137,7 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                 break;
             case('unknown'):
                 forecastle.css({width: cellEdge+'px', height: cellEdge+'px'});
-                forecastle.addClass('p2');
+                forecastle.css('background-color', forecastleColor);
                 break;
         }
         cell.append(forecastle);
