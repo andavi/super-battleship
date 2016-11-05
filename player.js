@@ -110,15 +110,24 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
         }
     };
 
-    game.registerEventHandler(SBConstants.TURN_CHANGE_EVENT,
-        mapDrawHandler);
+    game.registerEventHandler(SBConstants.TURN_CHANGE_EVENT, mapDrawHandler);
+    game.registerEventHandler(SBConstants.GAME_OVER_EVENT, mapDrawHandler);
 
     map.on('click', '.cell', function(e) {
         var x = $(this).data('x');
         var y = $(this).data('y');
         var sqr = game.queryLocation(key, x, y);
         if (sqr.type == 'p1') {
-            
+            var direction = sqr.ship.getPosition(key).direction;
+             game.moveShipForward(key, sqr.ship);
+            // map.on('keypress', function(e) {
+            //     if (e.keyCode == 38) {
+            //         e.preventDefault();
+            //         game.moveShipForward(key, sqr.ship);
+            //     }
+            // })
+
+
         } else {
             game.shootAt(key, x, y);
         }
