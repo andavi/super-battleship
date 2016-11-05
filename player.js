@@ -21,7 +21,7 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
          {name: "Submarine",
           size: 3},
          {name: "Destroyer",
-          size: 2}]
+          size: 2}];
 
     var eventLogHandler = function(e) {
         var cli_msg = $('<div class="cli_msg"></div>');
@@ -97,7 +97,7 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                 return table[i];
             }
         }
-        return 'uknown';
+        return 'unknown';
     }
 
     function createForecastle(sqr, x, y, cell, cellEdge) {
@@ -134,8 +134,9 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                 forecastle.css('border-top', side);
                 break;
             case('unknown'):
-                forecastle.css({width: cellEdge, height: cellEdge});
+                forecastle.css({width: cellEdge+'px', height: cellEdge+'px'});
                 forecastle.addClass('p2');
+                break;
         }
         cell.append(forecastle);
         return cell;
