@@ -60,16 +60,17 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
 
 
     var mapDrawHandler = function(e) {
-        board_edge = 600;
-        cell_edge = board_edge / game.getBoardSize();
+        var boardEdge = 600;
+        var cellEdge = boardEdge / game.getBoardSize();
         map.empty();
-        map.css({width: board_edge+'px', height: board_edge+'px'});
+        map.css({width: boardEdge+'px', height: boardEdge+'px'});
 
         for (var y = 0; y < game.getBoardSize(); y++) {
             for (var x = 0; x < game.getBoardSize(); x++) {
-                cell = $('<div></div>');
-                cell.css({width: cell_edge+'px', height: cell_edge+'px'});
+                var cell = $('<div></div>');
+                cell.css({width: cellEdge+'px', height: cellEdge+'px'});
                 cell.addClass('cell');
+                cell.data({x: x, y: y});
                 var sqr = game.queryLocation(key, x, y);
                 switch (sqr.type) {
                     case "miss":
@@ -77,19 +78,15 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one) {
                         break;
                     case "p1":
                         if (sqr.state == SBConstants.OK) {
-                            // map_str += "1";
                             cell.addClass('ship');
                         } else {
-                            // map_str += "X";
                             cell.addClass('hit');
                         }
                         break;
                     case "p2":
                         if (sqr.state == SBConstants.OK) {
-                            // map_str += "2";
                             cell.addClass('ship');
                         } else {
-                            // map_str += "X";
                             cell.addClass('hit');
                         }
                         break;
