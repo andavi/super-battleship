@@ -1,5 +1,5 @@
 var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
-    boardEdge) {
+    boardEdge, fleet) {
 
     var key;
     if (is_player_one) {
@@ -13,16 +13,6 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
     cli_input = $(cli_input);
     map = $(map);
     var ship = null;
-    var fleet = [{name: "Carrier",
-          size: 5},
-         {name: "Battleship",
-          size: 4},
-         {name: "Cruiser",
-          size: 3},
-         {name: "Submarine",
-          size: 3},
-         {name: "Destroyer",
-          size: 2}];
 
     var eventLogHandler = function(e) {
         var cli_msg = $('<div class="cli_msg"></div>');
