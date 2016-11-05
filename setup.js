@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var game = new SuperBattleship({
-        boardSize: 30,
+        boardSize: 50,
         missAge: 100,
         turnLimit: 1000
     });

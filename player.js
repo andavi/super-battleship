@@ -8,10 +8,20 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
     }
 
 
-    cli_output = $(cli_output);
-    cli_input = $(cli_input);
-    map = $(map);
-    ship = null;
+    var cli_output = $(cli_output);
+    var cli_input = $(cli_input);
+    var map = $(map);
+    var ship = null;
+    var fleet = [{name: "Carrier",
+          size: 5},
+         {name: "Battleship",
+          size: 4},
+         {name: "Cruiser",
+          size: 3},
+         {name: "Submarine",
+          size: 3},
+         {name: "Destroyer",
+          size: 2}]
 
     var eventLogHandler = function(e) {
         var cli_msg = $('<div class="cli_msg"></div>');
@@ -74,9 +84,29 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
         return color;
     }
 
-    function createForecastle(sqr, cell, cellEdge) {
-        cell.addClass('empty');
-        var direction = sqr.ship.getPosition(key).direction;
+    function getDirectionEnemyShip(sqr, x, y) {
+        var shipName = sqr.ship.getName();
+        var queries = [];
+        var table = {0: 'south', 1: 'north', 2: 'west', 3: 'east'};
+        queries.push(game.queryLocation(key, x, y-1)); //south
+        queries.push(game.queryLocation(key, x, y+1)); //north
+        queries.push(game.queryLocation(key, x+1, y)); //west
+        queries.push(game.queryLocation(key, x-1, y)); //east
+        for (var i=0; i < queries.length; i++){
+            if (queries[i].type==='p2' && queries[i].ship.getName()===shipName){
+                return table[i];
+            }
+        }
+        return 'uknown';
+    }
+
+    function createForecastle(sqr, x, y, cell, cellEdge) {
+        var direction;
+        if (sqr.type === 'p1') {
+            direction = sqr.ship.getPosition(key).direction;
+        } else {
+            direction = getDirectionEnemyShip(sqr, x, y);
+        }
         var forecastle = $('<div></div>');
         var forecastleColor = getForecastleColor(sqr);
         var side = cellEdge/2 + 'px solid transparent';
@@ -103,9 +133,23 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                 forecastle.css('border-right', base);
                 forecastle.css('border-top', side);
                 break;
+            case('unknown'):
+                forecastle.css({width: cellEdge, height: cellEdge});
+                forecastle.addClass('p2');
         }
         cell.append(forecastle);
         return cell;
+    }
+
+    function isVisible(x, y) {
+        for (var i=0; i<fleet.length; i++){
+            shipName = fleet[i].name;
+            shipObject = game.getShipByName(key, shipName);
+            if (shipObject.canSee(key, x, y)){
+                return true;
+            }
+        }
+        return false;
     }
 
     var mapDrawHandler = function(e) {
@@ -126,7 +170,8 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                         break;
                     case "p1":
                         if (sqr.segment === 0){
-                            cell = createForecastle(sqr, cell, cellEdge);
+                            cell.addClass('empty');
+                            cell = createForecastle(sqr, x, y, cell, cellEdge);
                         } else {
                             if (sqr.state == SBConstants.OK) {
                                 cell.addClass('p1');
@@ -136,20 +181,20 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                         }
                         break;
                     case "p2":
-                        // if (sqr.segment === 0){
-                        //     cell = createForecastle(sqr, cell, cellEdge);
-                        // } else {
-                        //     if (sqr.state == SBConstants.OK) {
-                        //         cell.addClass('p2');
-                        //     } else {
-                        //         cell.addClass('hit');
-                        //     }
-                        // }
-                        if (sqr.state == SBConstants.OK) {
+                        if (sqr.segment === 0){
+                            if (isVisible(x, y)){
+                                cell.addClass('empty');
+                            } else {
+                                cell.addClass('invisible');
+                            }
+                            cell = createForecastle(sqr, x, y, cell, cellEdge);
+                        } else {
+                            if (sqr.state == SBConstants.OK) {
                                 cell.addClass('p2');
                             } else {
                                 cell.addClass('hit');
                             }
+                        }
                         break;
                     case "empty":
                         cell.addClass('empty');
