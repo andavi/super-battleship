@@ -63,7 +63,15 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
         eventLogHandler);
 
     function getForecastleColor(sqr){
-        return 'gray';
+        var color;
+        if (sqr.type === 'p1' && sqr.state == SBConstants.OK) {
+            color = 'gray';
+        } else if (sqr.type === 'p2' && sqr.state == SBConstants.OK){
+            color = 'darkslategray';
+        } else {
+            color = 'red';
+        }
+        return color;
     }
 
     function createForecastle(sqr, cell, cellEdge) {
@@ -74,7 +82,6 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
         var side = cellEdge/2 + 'px solid transparent';
         var base = cellEdge + 'px solid ' + forecastleColor;
         forecastle.css({width: '0px', height: '0px'});
-        console.log(direction);
         switch(direction) {
             case('north'):
                 forecastle.css('border-bottom', base);
@@ -129,16 +136,21 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                         }
                         break;
                     case "p2":
-                    if (sqr.segment === 0){
-                        cell = createForecastle(sqr, cell, cellEdge);
-                    } else {
+                        // if (sqr.segment === 0){
+                        //     cell = createForecastle(sqr, cell, cellEdge);
+                        // } else {
+                        //     if (sqr.state == SBConstants.OK) {
+                        //         cell.addClass('p2');
+                        //     } else {
+                        //         cell.addClass('hit');
+                        //     }
+                        // }
                         if (sqr.state == SBConstants.OK) {
-                            cell.addClass('p2');
-                        } else {
-                            cell.addClass('hit');
-                        }
-                    }
-                    break;
+                                cell.addClass('p2');
+                            } else {
+                                cell.addClass('hit');
+                            }
+                        break;
                     case "empty":
                         cell.addClass('empty');
                         break;
