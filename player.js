@@ -62,6 +62,44 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
     game.registerEventHandler(SBConstants.GAME_OVER_EVENT,
         eventLogHandler);
 
+    function getForecastleColor(sqr){
+        return 'gray';
+    }
+
+    function createForecastle(sqr, cell, cellEdge) {
+        cell.addClass('empty');
+        var direction = sqr.ship.getPosition(key).direction;
+        var forecastle = $('<div></div>');
+        var forecastleColor = getForecastleColor(sqr);
+        var side = cellEdge/2 + 'px solid transparent';
+        var base = cellEdge + 'px solid ' + forecastleColor;
+        forecastle.css({width: '0px', height: '0px'});
+        console.log(direction);
+        switch(direction) {
+            case('north'):
+                forecastle.css('border-bottom', base);
+                forecastle.css('border-left', side);
+                forecastle.css('border-right', side);
+                break;
+            case('south'):
+                forecastle.css('border-top', base);
+                forecastle.css('border-left', side);
+                forecastle.css('border-right', side);
+                break;
+            case('east'):
+                forecastle.css('border-bottom', side);
+                forecastle.css('border-left', base);
+                forecastle.css('border-top', side);
+                break;
+            case('west'):
+                forecastle.css('border-bottom', side);
+                forecastle.css('border-right', base);
+                forecastle.css('border-top', side);
+                break;
+        }
+        cell.append(forecastle);
+        return cell;
+    }
 
     var mapDrawHandler = function(e) {
         var cellEdge = boardEdge / game.getBoardSize();
@@ -80,27 +118,27 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                         cell.addClass('miss');
                         break;
                     case "p1":
-                        if (sqr.state == SBConstants.OK) {
-                            if (sqr.segment == 0){
-                                cell.addClass('forecastle');
-                            } else {
-                                cell.addClass('p1');
-                            }
+                        if (sqr.segment === 0){
+                            cell = createForecastle(sqr, cell, cellEdge);
                         } else {
-                            cell.addClass('hit');
+                            if (sqr.state == SBConstants.OK) {
+                                cell.addClass('p1');
+                            } else {
+                                cell.addClass('hit');
+                            }
                         }
                         break;
                     case "p2":
+                    if (sqr.segment === 0){
+                        cell = createForecastle(sqr, cell, cellEdge);
+                    } else {
                         if (sqr.state == SBConstants.OK) {
-                            if (sqr.segment == 0){
-                                cell.addClass('forecastle');
-                            } else {
-                                cell.addClass('p2');
-                            }
+                            cell.addClass('p2');
                         } else {
                             cell.addClass('hit');
                         }
-                        break;
+                    }
+                    break;
                     case "empty":
                         cell.addClass('empty');
                         break;
@@ -128,9 +166,8 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
         }
     });
     $(document).on('keypress', function(e) {
-        console.log(e.keyCode);
         if (ship){
-            switch (e.keyCode) {
+            switch (e.charCode) {
                 case 102:
                     game.moveShipForward(key, ship);
                     break;
