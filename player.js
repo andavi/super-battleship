@@ -70,7 +70,11 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
     function getForecastleColor(sqr){
         var color;
         if (sqr.type === 'p1' && sqr.state == SBConstants.OK) {
-            color = 'gray';
+            if (sqr.ship == ship){
+                color = 'white';
+            } else {
+                color = 'gray';
+            }
         } else if (sqr.type === 'p2' && sqr.state == SBConstants.OK){
             color = 'darkslategray';
         } else {
@@ -170,7 +174,11 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                             cell = createForecastle(sqr, x, y, cell, cellEdge);
                         } else {
                             if (sqr.state == SBConstants.OK) {
-                                cell.addClass('p1');
+                                if (sqr.ship == ship) {
+                                    cell.addClass('highlighted');
+                                } else {
+                                    cell.addClass('p1');
+                                }
                             } else {
                                 cell.addClass('hit');
                             }
@@ -208,16 +216,17 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
     game.registerEventHandler(SBConstants.GAME_OVER_EVENT, mapDrawHandler);
 
     map.on('click', '.cell', function(e) {
-        // e.stopPropagation();
         var x = $(this).data('x');
         var y = $(this).data('y');
         var sqr = game.queryLocation(key, x, y);
         if (sqr.type == 'p1') {
             ship = sqr.ship;
+            mapDrawHandler(e);
         } else {
             game.shootAt(key, x, y);
         }
     });
+
     $(document).on('keypress', function(e) {
         if (ship){
             switch (e.charCode) {

@@ -22,8 +22,12 @@ h1 {
     float: left;
 }
 
-.miss {
+.highlighted {
     background-color: white;
+}
+
+.miss {
+    background-color: yellow;
 }
 
 .p1 {
