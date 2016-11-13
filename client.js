@@ -8,7 +8,6 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
         key = game.registerPlayerTwo();
     }
 
-
     cli_output = $(cli_output);
     cli_input = $(cli_input);
     map = $(map);

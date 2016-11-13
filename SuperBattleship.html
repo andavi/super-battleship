@@ -8,14 +8,14 @@
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
     <script src="http://www.cs.unc.edu/Courses/comp426-f16/kmp/SuperBattleship/SBConstants.js"></script>
     <script src="http://www.cs.unc.edu/Courses/comp426-f16/kmp/SuperBattleship/SuperBattleship.js"></script>
-    <script src="player.js"></script>
-    <script src="DumbAI.js"></script>
+    <script src="client.js"></script>
+    <script src="andaviAI.js"></script>
     <script src="setup.js"></script>
 
     <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 
-<body>
+<body data="key-value">
 
     <div id="map_panel">
         <h1>Super Battleship</h1>
@@ -27,10 +27,10 @@
     <div id="cli_panel">
         <div id="p1_cli_panel">
             <div class="rules">
-                <h3>Rules</h3>
+                <h3>Rules &amp; Movements</h3>
                 <ul>
-                    <li>To shoot click any square</li>
-                    <li>To move your ship click on it then:</li>
+                    <li>To shoot, click any square other than your own ships</li>
+                    <li>To move your ship, click it to select it, then:</li>
                     <ul>
                         <li>Press F to move forward</li>
                         <li>Press B to move backwards</li>
