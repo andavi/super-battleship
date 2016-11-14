@@ -18,13 +18,39 @@ var DumbAI = function(game, is_player_one, delay) {
             case SBConstants.TURN_CHANGE_EVENT:
                 if (((e.who == SBConstants.PLAYER_ONE) && is_player_one) ||
                     ((e.who == SBConstants.PLAYER_TWO) && (!is_player_one))) {
-                    {
-                        var x = Math.floor(Math.random() * game.getBoardSize());
-                        var y = Math.floor(Math.random() * game.getBoardSize());
+
+
+                    var target_x;
+                    var target_y;
+                    var foundShip = false;
+
+                        for (y=0; y < game.getBoardSize() && !foundShip; y++){
+                            for (x=0; x < game.getBoardSize(); x++){
+                                var sqr = game.queryLocation(key, x, y);
+
+                                if ((sqr.type=='p1' || sqr.type=='p2')&& sqr.state==SBConstants.OK && !sqr.ship.isMine(key)){
+                                    console.log('see one at ' + x +' '+ y);
+                                    foundShip = true;
+                                    target_x = x;
+                                    target_y = y;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!foundShip)  {
+                             target_x = Math.floor(Math.random() * game.getBoardSize());
+                             target_y = Math.floor(Math.random() * game.getBoardSize());
+                             console.log('randoms: ' + x +' '+ y);
+                        }
+
                         setTimeout(function() {
-                            game.shootAt(key, x, y);
+                            console.log('shot at: ' + x+ ' ' + y);
+                            game.shootAt(key, target_x, target_y);
                         }, turn_delay);
-                    }
+
+
+
                 }
         }
     };
