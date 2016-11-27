@@ -43,6 +43,10 @@ h1 {
 }
 
 .hit {
+    background-color: darkred;
+}
+
+.damaged {
     background-color: red;
 }
 

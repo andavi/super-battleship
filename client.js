@@ -68,16 +68,21 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
 
     function getForecastleColor(sqr){
         var color;
-        if (sqr.type === 'p1' && sqr.state == SBConstants.OK) {
-            if (sqr.ship == ship){
-                color = 'white';
+        if (sqr.type === 'p1') {
+            if (sqr.state == SBConstants.OK) {
+                if (sqr.ship == ship){
+                    color = 'white';
+                } else {
+                    color = 'gray';
+                }
             } else {
-                color = 'gray';
+                color = 'red';
             }
+
         } else if (sqr.type === 'p2' && sqr.state == SBConstants.OK){
             color = 'darkslategray';
         } else {
-            color = 'red';
+            color = 'darkred';
         }
         return color;
     }
@@ -179,7 +184,7 @@ var CLIPlayer = function(game, cli_input, cli_output, map, is_player_one,
                                     cell.addClass('p1');
                                 }
                             } else {
-                                cell.addClass('hit');
+                                cell.addClass('damaged');
                             }
                         }
                         break;
